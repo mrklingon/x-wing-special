@@ -6,12 +6,14 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     blast = sprites.createProjectileFromSprite(assets.image`bolt`, ship, 400, 0)
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
     blast.setFlag(SpriteFlag.DestroyOnWall, true)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     changeSpeed(0.75)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ast, function (sprite, otherSprite) {
+    music.play(music.melodyPlayable(music.knock), music.PlaybackMode.UntilDone)
     sprites.destroy(otherSprite, effects.fire, 500)
     info.changeScoreBy(randint(10, 30))
 })
