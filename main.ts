@@ -27,6 +27,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     ship.y += 5
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.ast, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.fire, 500)
     music.play(music.melodyPlayable(music.knock), music.PlaybackMode.UntilDone)
     scene.cameraShake(4, 500)
     info.changeLifeBy(-1)
@@ -35,6 +36,7 @@ let asteroid: Sprite = null
 let blast: Sprite = null
 let ship: Sprite = null
 let speed = 0
+game.splash("Pilot your X-Wing through asteroids! ")
 info.setLife(5)
 scene.setBackgroundColor(15)
 speed = 1
