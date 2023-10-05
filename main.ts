@@ -76,7 +76,7 @@ forever(function () {
     asteroid.setBounceOnWall(true)
     asteroid.setFlag(SpriteFlag.AutoDestroy, true)
     asteroid.setPosition(153, randint(5, 100))
-    asteroid.setVelocity(speed * randint(10, 90), randint(10, 90))
+    asteroid.setVelocity(speed * randint(10, 90), randint(-90, 90))
     pause(1000 * speed)
     sprites.destroy(asteroid)
 })
