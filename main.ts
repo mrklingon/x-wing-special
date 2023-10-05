@@ -57,12 +57,12 @@ assets.image`rock1`,
 assets.image`rock2`
 ]
 forever(function () {
-    pause(200 * randint(3, 9))
+    pause(500 / speed + 100 * randint(3, 6))
     asteroid = sprites.create(rocks._pickRandom(), SpriteKind.ast)
     asteroid.setBounceOnWall(true)
     asteroid.setFlag(SpriteFlag.AutoDestroy, true)
     asteroid.setPosition(153, randint(5, 100))
-    asteroid.setVelocity(randint(10, 90), randint(10, 90))
-    pause(2000)
+    asteroid.setVelocity(speed * randint(10, 90), randint(10, 90))
+    pause(1000 * speed)
     sprites.destroy(asteroid)
 })
