@@ -4,10 +4,17 @@ namespace SpriteKind {
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ship.y += -5
 })
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (droid) {
+        ship.sayText("disengage astromech", 500, false)
+        droid = false
+    } else {
+        ship.sayText("engage astromech", 500, false)
+        droid = true
+    }
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    blast = sprites.createProjectileFromSprite(assets.image`bolt`, ship, 400, 0)
-    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
-    blast.setFlag(SpriteFlag.DestroyOnWall, true)
+    laser()
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     changeSpeed(0.75)
@@ -17,6 +24,11 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.ast, function (sprite, other
     sprites.destroy(otherSprite, effects.fire, 500)
     info.changeScoreBy(randint(10, 30))
 })
+function laser () {
+    blast = sprites.createProjectileFromSprite(assets.image`bolt`, ship, 400, 0)
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+    blast.setFlag(SpriteFlag.DestroyOnWall, true)
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     changeSpeed(1.2)
 })
@@ -37,11 +49,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.ast, function (sprite, otherSpri
 let asteroid: Sprite = null
 let blast: Sprite = null
 let ship: Sprite = null
+let droid = false
 let speed = 0
 game.splash("Pilot your X-Wing through asteroids! ")
 info.setLife(5)
 scene.setBackgroundColor(15)
 speed = 1
+droid = false
 let mscale = 0
 scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`back1`)
 scroller.setLayerImage(scroller.BackgroundLayer.Layer1, assets.image`back0`)
@@ -65,4 +79,11 @@ forever(function () {
     asteroid.setVelocity(speed * randint(10, 90), randint(10, 90))
     pause(1000 * speed)
     sprites.destroy(asteroid)
+})
+forever(function () {
+    if (droid) {
+        laser()
+        ship.y += randint(-6, 6)
+        pause(randint(3, 6) * 250)
+    }
 })
