@@ -1,5 +1,6 @@
 namespace SpriteKind {
     export const ast = SpriteKind.create()
+    export const base = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     ship.y += -5
@@ -46,6 +47,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.ast, function (sprite, otherSpri
     scene.cameraShake(4, 500)
     info.changeLifeBy(-1)
 })
+sprites.onOverlap(SpriteKind.base, SpriteKind.Player, function (sprite, otherSprite) {
+    info.setLife(5)
+    otherSprite.startEffect(effects.rings, 500)
+    sprites.destroy(sprite)
+})
+let sttn: Sprite = null
 let asteroid: Sprite = null
 let blast: Sprite = null
 let ship: Sprite = null
@@ -56,7 +63,8 @@ info.setLife(5)
 scene.setBackgroundColor(15)
 speed = 1
 droid = false
-let mscale = 0
+let docked = false
+let timer = 0
 scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`back1`)
 scroller.setLayerImage(scroller.BackgroundLayer.Layer1, assets.image`back0`)
 changeSpeed(1)
@@ -71,19 +79,34 @@ assets.image`rock1`,
 assets.image`rock2`
 ]
 forever(function () {
-    pause(500 / speed + 100 * randint(3, 6))
-    asteroid = sprites.create(rocks._pickRandom(), SpriteKind.ast)
-    asteroid.setBounceOnWall(true)
-    asteroid.setFlag(SpriteFlag.AutoDestroy, true)
-    asteroid.setPosition(153, randint(5, 100))
-    asteroid.setVelocity(speed * randint(10, 90), randint(-90, 90))
-    pause(1000 * speed)
-    sprites.destroy(asteroid)
+    if (!(docked)) {
+        pause(500 / speed + 100 * randint(3, 6))
+        asteroid = sprites.create(rocks._pickRandom(), SpriteKind.ast)
+        asteroid.setBounceOnWall(true)
+        asteroid.setFlag(SpriteFlag.AutoDestroy, true)
+        asteroid.setPosition(153, randint(5, 100))
+        asteroid.setVelocity(speed * randint(10, 90), randint(-90, 90))
+        pause(1000 * speed)
+        sprites.destroy(asteroid)
+    }
 })
 forever(function () {
     if (droid) {
         laser()
         ship.y += randint(-6, 6)
         pause(randint(3, 6) * 250)
+    }
+})
+forever(function () {
+    if (!(docked)) {
+        pause(500)
+        timer += 1
+        if (40 < timer) {
+            docked = true
+            timer = 0
+            sttn = sprites.create(assets.image`station`, SpriteKind.base)
+            sttn.setPosition(147, 59)
+            sttn.follow(ship)
+        }
     }
 })
