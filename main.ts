@@ -51,11 +51,13 @@ sprites.onOverlap(SpriteKind.base, SpriteKind.Player, function (sprite, otherSpr
     info.setLife(5)
     otherSprite.startEffect(effects.rings, 500)
     sprites.destroy(sprite)
+    docked = false
 })
 let sttn: Sprite = null
 let asteroid: Sprite = null
 let blast: Sprite = null
 let ship: Sprite = null
+let docked = false
 let droid = false
 let speed = 0
 game.splash("Pilot your X-Wing through asteroids! ")
@@ -63,7 +65,7 @@ info.setLife(5)
 scene.setBackgroundColor(15)
 speed = 1
 droid = false
-let docked = false
+docked = false
 let timer = 0
 scroller.setLayerImage(scroller.BackgroundLayer.Layer0, assets.image`back1`)
 scroller.setLayerImage(scroller.BackgroundLayer.Layer1, assets.image`back0`)
