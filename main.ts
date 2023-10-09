@@ -107,6 +107,7 @@ forever(function () {
             docked = true
             timer = 0
             sttn = sprites.create(assets.image`station`, SpriteKind.base)
+            sttn.setScale(2, ScaleAnchor.Middle)
             sttn.setPosition(147, 59)
             sttn.follow(ship)
         }
